@@ -22,17 +22,18 @@ U_TEST_SRC	=	$(TEST_DIR)test$(TEST_NUM).c
 U_TEST_OBJ	=	$(U_TEST_SRC:.c=.o)
 TEST_NAME	=	test
 
-NAME = philo
+NAME = philo/philo
 
 
 all: $(NAME)
 
-$(NAME): $(SRCS)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 test: $(TEST_NAME) $(U_TEST_OBJ)
 	$(CC) $(CFLAGS) $(U_TEST_OBJ) -o $@
 
-%.o:%.c
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
