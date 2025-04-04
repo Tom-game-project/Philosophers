@@ -4,3 +4,8 @@ test
 *.swp
 *.swo
 *.a
+
+# ignore language sarver setting
+
+.cache
+compile_commands.json
