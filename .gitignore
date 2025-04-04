@@ -5,6 +5,7 @@ test
 *.swo
 *.a
 
+philo/philo
 # ignore language sarver setting
 
 .cache
