@@ -30,7 +30,7 @@ struct s_philosopher_data{
 } ;
 
 struct s_philo_fork{
-	pthread_mutex_t *mutex; // この構造体のデータは
+	pthread_mutex_t mutex; // この構造体のデータは
 				// mutexで保護されている場合だけ触れる
 	int	fork_id;
 };

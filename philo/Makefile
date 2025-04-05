@@ -11,7 +11,15 @@ RMFLAGS	=	-rf
 AR	=	ar
 ARFLAGS = rcs
 
-SRCS	=	src/philo.c
+
+SRCS	=	src/philo.c\
+		src/philosopher/init.c\
+		src/philosopher/set.c\
+		src/philosopher/brain.c\
+		src/chopstick/set.c\
+		src/chopstick/init.c\
+
+
 OBJS	=	$(SRCS:.c=.o)
 
 # optional
