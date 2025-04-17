@@ -19,8 +19,12 @@ OBJS	=	$(SRCS:.c=.o)
 TEST_NUM	?=	00
 TEST_DIR	=	tests/
 U_TEST_SRC	=	$(TEST_DIR)test$(TEST_NUM).c
+
+EXAMPLE_FILE	?=	examples/time_example00.c
+
 U_TEST_OBJ	=	$(U_TEST_SRC:.c=.o)
 TEST_NAME	=	test
+EXAMPLE_NAME	=	example
 
 NAME = philo/philo
 
@@ -32,6 +36,10 @@ $(NAME): $(OBJS)
 
 test: $(TEST_NAME) $(U_TEST_OBJ)
 	$(CC) $(CFLAGS) $(U_TEST_OBJ) -o $@
+
+example: $(EXAMPLE_FILE)
+	$(CC) $(CFLAGS) $(EXAMPLE_FILE) -o $(EXAMPLE_NAME)
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -46,4 +54,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all test clean fclean re
+.PHONY: all test clean fclean re example
