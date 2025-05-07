@@ -10,6 +10,7 @@ int set_forks(t_philo_fork f[], int number_of_philosophers)
 	while (i < number_of_philosophers)
 	{
 		pthread_mutex_init(&f[i].mutex, NULL);
+		// printf("Debug: %p\n", &f[i].mutex);
 		f[i].fork_id = i;
 		i += 1;
 	}

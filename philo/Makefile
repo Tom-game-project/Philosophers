@@ -18,6 +18,7 @@ SRCS	=	src/philo.c\
 		src/philosopher/brain.c\
 		src/chopstick/set.c\
 		src/chopstick/init.c\
+		src/test_tools/print.c\
 
 
 OBJS	=	$(SRCS:.c=.o)

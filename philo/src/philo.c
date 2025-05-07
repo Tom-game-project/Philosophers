@@ -28,6 +28,9 @@ int main(int argc, char *args[])
 	t.time_to_die = 410;
 	t.time_to_eat = 200;
 	t.time_to_sleep = 200;
+	//t.time_to_die = 310; // 4 310 200 100
+	//t.time_to_eat = 200;
+	//t.time_to_sleep = 100;
 	t.number_of_times_each_philosopher_must_eat = -1;
 	t.die_flag = false;
 	pthread_mutex_init(&t.mutex, NULL);
