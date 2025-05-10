@@ -27,12 +27,12 @@ int main(int argc, char *args[])
 
 	/// 後で、引数を確かめる
 	t.number_of_philosophers = 4;
-	t.time_to_die = 410;
-	t.time_to_eat = 200;
-	t.time_to_sleep = 200;
-	//t.time_to_die = 310; // 4 310 200 100
+	//t.time_to_die = 410;
 	//t.time_to_eat = 200;
-	//t.time_to_sleep = 100;
+	//t.time_to_sleep = 200;
+	t.time_to_die = 310; // 4 310 200 100
+	t.time_to_eat = 200;
+	t.time_to_sleep = 100;
 	t.number_of_times_each_philosopher_must_eat = -1;
 
 	tid_table = (pthread_t*) malloc(sizeof(pthread_t) * t.number_of_philosophers + 1); // 哲学者の人数分のスレッドと死神用のスレッド

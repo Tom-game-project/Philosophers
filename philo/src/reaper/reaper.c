@@ -4,17 +4,18 @@
 #include <unistd.h>
 #include "philo_data.h"
 #include "time.h"
+#include <stdio.h>
 
-bool is_dead(struct timeval last_eat_timestamp, useconds_t time_to_die)
+bool is_dead(struct timeval last_eat_timestamp, long time_to_die)
 {
 	struct timeval now;
 
 	gettimeofday(&now, NULL);
 
-	uint32_t seconds = now.tv_sec - last_eat_timestamp.tv_sec;
-	uint32_t microseconds = now.tv_usec - last_eat_timestamp.tv_usec;
-	useconds_t d =  seconds * 1000 + microseconds * 1e-3;
-	//printf("useconds_t %u %u \n", data->info->time_to_die, d);
+	long seconds = now.tv_sec - last_eat_timestamp.tv_sec;
+	long microseconds = now.tv_usec - last_eat_timestamp.tv_usec;
+	long d = seconds * 1000 + microseconds * 1e-3;
+	//printf("useconds_t %lu %lu\n",time_to_die, d);
 	return (time_to_die <= d);
 }
 

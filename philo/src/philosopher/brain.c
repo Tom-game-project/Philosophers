@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+
 // 哲学者の脳みそ
 //
 #include <stdint.h>
@@ -53,11 +54,6 @@ bool try_to_eat(t_philosopher_data *data)
 		}
 		philo_print(data, data->last_act_timestamp, "has taken a fork\n");
 		pthread_mutex_lock(&data->r_fork->mutex);
-		// 次の状態に移る前に自身の死亡判定
-		// 自身の状態が死なら死神のsome_one_dieをtrueにする(mutexを忘れずに)
-		// スコープをなるべく小さくして、タイムロスをなくす
-		// 自分含めほかの哲学者の死亡判定(some_one_dieをチェック)
-		// usleepまたは、mutexを解除してからreturnの処理のどちらか
 		if (get_some_one_die(data->reaper, data))
 		{
 			pthread_mutex_unlock(&data->r_fork->mutex);
@@ -77,6 +73,7 @@ bool try_to_eat(t_philosopher_data *data)
 	else
 	{
 		// thinking
+		usleep(1);
 		pthread_mutex_lock(&data->r_fork->mutex);
 		if (get_some_one_die(data->reaper, data))
 		{
@@ -106,10 +103,11 @@ bool try_to_sleep(t_philosopher_data *data)
 {
 	if (get_some_one_die(data->reaper, data))
 		return (true);
+	update_last_eat_time(data);
 	gettimeofday(&data->last_act_timestamp, NULL);
 	philo_print(data, data->last_act_timestamp, "is sleeping\n");
 	data->self_status = e_sleeping;
-	update_last_eat_time(data);
+	//printf("try to set eat time stamp\n");
 	usleep_wrap(data->info.time_to_sleep, data->last_act_timestamp);
 	return (false);
 }
