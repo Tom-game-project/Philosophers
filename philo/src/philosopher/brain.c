@@ -19,7 +19,6 @@ update_last_eat_time(t_philosopher_data *data)
 	pthread_mutex_unlock(&data->time_mutex);
 }
 
-
 /// 自分（哲学者自身）が自分の死を判定するための関数
 /// 誰かが死んだかどうかの判定
 /// 確認すべきこと、だれかが死んでいるかどうかまた、死んだのは自分かどうか
@@ -37,6 +36,14 @@ bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
 	pthread_mutex_unlock(&reaper->mutex);
 	return (some_one_die);
 }
+
+/// 満腹判定
+bool is_full(t_philosopher_data data)
+{
+	return (data.info.number_of_times_each_philosopher_must_eat != -1 // 回数の設定があるかどうか
+			&& data.info.number_of_times_each_philosopher_must_eat <= data.eat_counter);
+}
+
 
 /// 考えながら食事の時間を待つ
 ///
@@ -101,7 +108,8 @@ bool try_to_eat(t_philosopher_data *data)
 
 bool try_to_sleep(t_philosopher_data *data)
 {
-	if (get_some_one_die(data->reaper, data))
+	data->eat_counter += 1;
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 		return (true);
 	update_last_eat_time(data);
 	gettimeofday(&data->last_act_timestamp, NULL);

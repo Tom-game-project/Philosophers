@@ -28,6 +28,7 @@ int set_philos(
 		cpy_info(&philos[i], info);
 		philos[i].print_mutex = print_mutex;
 		philos[i].philo_id = i;
+		philos[i].eat_counter = 0;
 		philos[i].l_fork = &forks[i];
 		philos[i].r_fork = &forks[(i + 1) % info.number_of_philosophers];
 		i += 1;

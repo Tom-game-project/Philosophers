@@ -44,7 +44,7 @@ struct s_philosopher_data
 	// 死神から参照される、last_eat_timestamp
 	// を保護する
 	struct timeval last_act_timestamp;
-	uint64_t eat_counter;
+	int eat_counter;
 	pthread_mutex_t *print_mutex; // 哲学者が一つのメガホンを共有するイメージ
 	//指定した食事回数を超えたらfalse
 	t_info_table info; // 引数で与えられた条件と、
