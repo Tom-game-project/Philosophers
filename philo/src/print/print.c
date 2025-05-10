@@ -9,11 +9,11 @@ int philo_print(
 	char *state
 )
 {
-	useconds_t d;
+	long d;
 
 	pthread_mutex_lock(data->print_mutex);
 	d = time.tv_sec * 1000 + time.tv_usec * 1e-3;
-	printf("%d %d %s", d, data->philo_id, state);
+	printf("%ld %d %s", d, data->philo_id, state);
 	pthread_mutex_unlock(data->print_mutex);
 	return (0);
 }

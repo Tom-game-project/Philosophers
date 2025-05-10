@@ -26,7 +26,7 @@ int set_philos(
 	while (i < info.number_of_philosophers)
 	{
 		cpy_info(&philos[i], info);
-		philos->print_mutex = print_mutex;
+		philos[i].print_mutex = print_mutex;
 		philos[i].philo_id = i;
 		philos[i].l_fork = &forks[i];
 		philos[i].r_fork = &forks[(i + 1) % info.number_of_philosophers];

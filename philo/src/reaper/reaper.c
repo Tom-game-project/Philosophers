@@ -18,6 +18,8 @@ bool is_dead(struct timeval last_eat_timestamp, useconds_t time_to_die)
 	return (time_to_die <= d);
 }
 
+#include <stdio.h>
+
 bool set_dead_philo(t_reaper *data)
 {
 	int i;
@@ -42,11 +44,12 @@ bool set_dead_philo(t_reaper *data)
 	return (false);
 }
 
+
 void *reaper_thread_func(void *param)
 {
 	t_reaper *data;
 
-	data = (t_reaper *) param;
+	data = (t_reaper *)param;
 	while (true) 
 	{
 		if (set_dead_philo(data))

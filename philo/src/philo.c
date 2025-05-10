@@ -41,6 +41,7 @@ int main(int argc, char *args[])
 	philosophers = init_philos(forks, t, &print_mutex);
 
 	reaper = init_reaper(t, philosophers);
+	set_reaper_to_philo(philosophers, reaper);
 
 	int i;
 	i = 0;
@@ -49,7 +50,7 @@ int main(int argc, char *args[])
 		pthread_create(&tid_table[i], NULL, philo_thread_func, &philosophers[i]);
 		i += 1;
 	}
-	pthread_create(&tid_table[i], NULL, reaper_thread_func, &reaper);
+	pthread_create(&tid_table[i], NULL, reaper_thread_func, reaper);
 
 	/// thread の終了を待つ
 	i = 0;

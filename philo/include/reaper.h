@@ -28,5 +28,11 @@ void *reaper_thread_func(void *param);
 int set_reaper(t_reaper *reaper, t_info_table info, t_philosopher_data *philosophers);
 
 t_reaper *init_reaper(t_info_table info, t_philosopher_data *philosophers);
+
+int set_reaper_to_philo(
+	t_philosopher_data *philos,
+	t_reaper *reaper
+);
+
 #endif
 
