@@ -29,22 +29,20 @@ bool set_dead_philo(t_reaper *data)
 		pthread_mutex_lock(&data->philosophers[i].time_mutex);
 		if (is_dead(data->philosophers[i].last_eat_timestamp, data->info.time_to_die))
 		{
-			pthread_mutex_unlock(&data->philosophers[i].time_mutex);
 			data->dead_philo = &data->philosophers[i]; // ここで死んだ哲学者をセットする
+			gettimeofday(&data->dead_time_stamp, NULL);
+			pthread_mutex_unlock(&data->philosophers[i].time_mutex);
 			pthread_mutex_unlock(&data->mutex);
 			return (true);
 		}
 		pthread_mutex_unlock(&data->philosophers[i].time_mutex);
 		pthread_mutex_unlock(&data->mutex);
-		// 誰か死んでいたら
-		// その哲学者のポインタを保存ループを抜ける
-		//
 		i += 1;
 	}
 	return (false);
 }
 
-int reaper_thread(void *param)
+void *reaper_thread_func(void *param)
 {
 	t_reaper *data;
 

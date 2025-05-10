@@ -8,9 +8,18 @@
 // 哲学者の脳みそ
 //
 #include <stdint.h>
+#include "print.h"
+
+void
+update_last_eat_time(t_philosopher_data *data)
+{
+	pthread_mutex_lock(&data->time_mutex);
+	gettimeofday(&data->last_eat_timestamp, NULL);
+	pthread_mutex_unlock(&data->time_mutex);
+}
+
 
 /// 自分（哲学者自身）が自分の死を判定するための関数
-
 /// 誰かが死んだかどうかの判定
 /// 確認すべきこと、だれかが死んでいるかどうかまた、死んだのは自分かどうか
 bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
@@ -22,6 +31,7 @@ bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
 	if (reaper->dead_philo == self)
 	{
 		// 自分が死んだことを宣言する
+		philo_print(self, reaper->dead_time_stamp, "died\n");
 	}
 	pthread_mutex_unlock(&reaper->mutex);
 	return (some_one_die);
@@ -29,7 +39,7 @@ bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
 
 /// 考えながら食事の時間を待つ
 ///
-void try_to_eat(t_philosopher_data *data)
+bool try_to_eat(t_philosopher_data *data)
 {
 	//printf("philo_id: %p %d\n", &data->philo_id, data->philo_id);
 	if (data->philo_id % 2 == 0)
@@ -42,14 +52,19 @@ void try_to_eat(t_philosopher_data *data)
 		// スコープをなるべく小さくして、タイムロスをなくす
 		// 自分含めほかの哲学者の死亡判定(some_one_dieをチェック)
 		// usleepまたは、mutexを解除してからreturnの処理のどちらか
-		//
-		
+		if (get_some_one_die(data->reaper, data))
+		{
+			pthread_mutex_unlock(&data->r_fork->mutex);
+			pthread_mutex_unlock(&data->l_fork->mutex);
+			return (true);
+		}
 		data->self_status = e_eating; // 隣の人から箸を得られたら
 		gettimeofday(&data->last_act_timestamp, NULL);
 		// eating
 		usleep_wrap(data->info.time_to_eat, data->last_act_timestamp);
 		pthread_mutex_unlock(&data->r_fork->mutex); // 箸を置く
 		pthread_mutex_unlock(&data->l_fork->mutex);
+		return (false);
 	}
 	else
 	{
@@ -57,25 +72,40 @@ void try_to_eat(t_philosopher_data *data)
 		pthread_mutex_lock(&data->r_fork->mutex);
 		pthread_mutex_lock(&data->l_fork->mutex);
 		// 次の状態に移る前に死亡判定
+		if (get_some_one_die(data->reaper, data))
+		{
+			pthread_mutex_unlock(&data->l_fork->mutex);
+			pthread_mutex_unlock(&data->r_fork->mutex);
+			return (true);
+		}
 		data->self_status = e_eating; // 隣の人から箸を得られたら
+		gettimeofday(&data->last_act_timestamp, NULL);
 		// sleeping
 		usleep_wrap(data->info.time_to_eat, data->last_act_timestamp);
 		pthread_mutex_unlock(&data->l_fork->mutex);
 		pthread_mutex_unlock(&data->r_fork->mutex); // 箸を置く
+		return (false);
 	}
-	// eating counterをインクリメント
-	// 次の状態に移る前に死亡判定
-	// 死亡判定諸々が終わってからeating timestamp更新
-	data->self_status = e_sleeping;
-	gettimeofday(&data->last_act_timestamp, NULL);
-	gettimeofday(&data->last_eat_timestamp, NULL);
 }
 
-void philo_sleeping(t_philosopher_data *data)
+bool try_to_sleep(t_philosopher_data *data)
 {
-	usleep_wrap(data->info.time_to_eat, data->last_act_timestamp);
+	if (get_some_one_die(data->reaper, data))
+		return (true);
+	data->self_status = e_sleeping;
 	gettimeofday(&data->last_act_timestamp, NULL);
+	update_last_eat_time(data);
+	usleep_wrap(data->info.time_to_sleep, data->last_act_timestamp);
+	return (false);
+}
+
+bool try_to_think(t_philosopher_data *data)
+{
+	if (get_some_one_die(data->reaper, data))
+		return (true);
 	data->self_status = e_thinking;
+	gettimeofday(&data->last_act_timestamp, NULL);
+	return (false);
 }
 
 void *philo_thread_func(void *param)
@@ -83,11 +113,26 @@ void *philo_thread_func(void *param)
 	t_philosopher_data *data;
 	data = (t_philosopher_data *) param;
 
+	update_last_eat_time(data);
 	data->self_status = e_thinking;
-	gettimeofday(&data->last_eat_timestamp, NULL);
 	gettimeofday(&data->last_act_timestamp, NULL);
-	while (1) 
+	while (true) 
 	{
+		if (data->self_status == e_thinking)
+		{
+			if (try_to_eat(data))
+				break ;
+		}
+		else if (data->self_status == e_eating)
+		{
+			if (try_to_sleep(data))
+				break ;
+		}
+		else 
+		{
+			if (try_to_think(data))
+				break ;
+		}
 	}
 	return (NULL);
 }

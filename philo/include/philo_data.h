@@ -12,6 +12,7 @@ typedef struct s_info_table t_info_table;
 typedef struct s_philo_fork t_philo_fork;
 typedef enum e_philo_status t_philo_status;
 typedef struct s_philosopher_data t_philosopher_data;
+typedef struct s_reaper t_reaper;
 
 /// 以下の構造体はすべての哲学者が共有する
 struct s_info_table
@@ -47,7 +48,7 @@ struct s_philosopher_data
 	pthread_mutex_t *print_mutex; // 哲学者が一つのメガホンを共有するイメージ
 	//指定した食事回数を超えたらfalse
 	t_info_table info; // 引数で与えられた条件と、
-			    // 他の哲学者が死んだかどうかの情報を保持する構造体
+	t_reaper *reaper;
 	t_philo_fork *r_fork; // 右手に持てるフォーク
 	t_philo_fork *l_fork; // 左手に持てるフォーク
 } ;

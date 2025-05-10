@@ -13,9 +13,10 @@ cpy_info(t_reaper *data, t_info_table info)
 	data->info.time_to_sleep = info.time_to_sleep;
 }
 
-int set_reaper(t_reaper *reaper, t_info_table info)
+int set_reaper(t_reaper *reaper, t_info_table info, t_philosopher_data *philosophers)
 {
 	reaper->dead_philo = NULL;
+	reaper->philosophers = philosophers;
 	pthread_mutex_init(&reaper->mutex, NULL);
 	cpy_info(reaper, info);
 	return (0);
