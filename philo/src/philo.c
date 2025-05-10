@@ -8,7 +8,6 @@
 #include "philosopher.h"
 #include "chopstick.h"
 
-void *thread_func(void *param);
 
 int main(int argc, char *args[])
 {
@@ -18,6 +17,7 @@ int main(int argc, char *args[])
 	pthread_t *tid_table;
 	t_philosopher_data *philosophers;
 	t_philo_fork *forks;
+	pthread_mutex_t print_mutex;
 
 	(void) t;
 	(void) philosophers;
@@ -32,12 +32,10 @@ int main(int argc, char *args[])
 	//t.time_to_eat = 200;
 	//t.time_to_sleep = 100;
 	t.number_of_times_each_philosopher_must_eat = -1;
-	t.die_flag = false;
-	pthread_mutex_init(&t.mutex, NULL);
 
 	tid_table = (pthread_t*) malloc(sizeof(pthread_t) * t.number_of_philosophers); // スレッド
 	forks = init_forks(t.number_of_philosophers);
-	philosophers = init_philos(forks, &t);
+	philosophers = init_philos(forks, t, &print_mutex);
 
 	int i;
 	i = 0;
@@ -61,12 +59,3 @@ int main(int argc, char *args[])
 	}
 }
 
-void *thread_func(void *param)
-{
-	// 非同期に実行する処理
-	t_philosopher_data *data;
-
-	data = param;
-	printf("philo_id: %d\n", data->philo_id);
-	return (NULL);
-}

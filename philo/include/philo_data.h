@@ -22,10 +22,9 @@ struct s_info_table
 	useconds_t time_to_eat;
 	useconds_t time_to_sleep;
 	int number_of_times_each_philosopher_must_eat;
-	bool die_flag; // 最初はfalse、哲学者が死んだタイミングでtrueになる
-	pthread_mutex_t mutex;
 };
 
+/// 哲学者の状態
 enum e_philo_status
 {
 	e_die,
@@ -34,21 +33,29 @@ enum e_philo_status
 	e_sleeping
 };
 
+/// 哲学者
 struct s_philosopher_data
 {
 	int philo_id;  // スレッドごとの識別番号
 	t_philo_status self_status;
 	struct timeval last_eat_timestamp;
+	pthread_mutex_t time_mutex; 
+	// 死神から参照される、last_eat_timestamp
+	// を保護する
+	struct timeval last_act_timestamp;
 	uint64_t eat_counter;
-	bool is_full; //指定した食事回数を超えたらfalse
-	t_info_table *info; // 引数で与えられた条件と、他の哲学者が死んだかどうかの情報を保持する構造体
+	pthread_mutex_t *print_mutex; // 哲学者が一つのメガホンを共有するイメージ
+	//指定した食事回数を超えたらfalse
+	t_info_table info; // 引数で与えられた条件と、
+			    // 他の哲学者が死んだかどうかの情報を保持する構造体
 	t_philo_fork *r_fork; // 右手に持てるフォーク
 	t_philo_fork *l_fork; // 左手に持てるフォーク
 } ;
 
+/// フォーク
 struct s_philo_fork
 {
-	pthread_mutex_t mutex; // この構造体のデータは
+	pthread_mutex_t mutex;	// この構造体のデータは
 				// mutexで保護されている場合だけ触れる
 	int	fork_id;
 };
