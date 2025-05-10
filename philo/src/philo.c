@@ -9,7 +9,6 @@
 #include "chopstick.h"
 #include "reaper.h"
 
-
 int main(int argc, char *args[])
 {
 	(void) argc;
