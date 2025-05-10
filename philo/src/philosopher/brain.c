@@ -19,7 +19,7 @@ bool am_i_dead(t_philosopher_data *data)
 	uint32_t seconds = now.tv_sec - data->last_eat_timestamp.tv_sec;
 	uint32_t microseconds = now.tv_usec - data->last_eat_timestamp.tv_usec;
 	useconds_t d =  seconds * 1000 + microseconds * 1e-3;
-	printf("useconds_t %u %u \n", data->info->time_to_die, d);
+	//printf("useconds_t %u %u \n", data->info->time_to_die, d);
 	return (data->info->time_to_die <= d);
 }
 
@@ -49,7 +49,7 @@ bool all_of_philo_are_full(t_reaper *reaper)
 ///
 void try_to_eat(t_philosopher_data *data)
 {
-	printf("philo_id: %p %d\n", &data->philo_id, data->philo_id);
+	//printf("philo_id: %p %d\n", &data->philo_id, data->philo_id);
 	if (data->philo_id % 2 == 0)
 	{
 		// thinking
@@ -86,9 +86,9 @@ void try_to_eat(t_philosopher_data *data)
 
 void philo_sleeping(t_philosopher_data *data)
 {
-	printf("I am philo%d time to sleep\n", data->philo_id);
+	//printf("I am philo%d time to sleep\n", data->philo_id);
 	usleep(data->info->time_to_sleep);
-	printf("I am philo%d time to think\n", data->philo_id);
+	//printf("I am philo%d time to think\n", data->philo_id);
 	data->self_status = e_thinking;
 	// 考え始める
 }
@@ -126,14 +126,14 @@ void *philo_thread_func(void *param)
 		pthread_mutex_lock(&data->info->mutex);
 		if (am_i_dead(data) || data->info->die_flag)
 		{
-			printf("dead %b %b\n", am_i_dead(data), data->info->die_flag);
+			//printf("dead %b %b\n", am_i_dead(data), data->info->die_flag);
 			data->info->die_flag = true;
 			pthread_mutex_unlock(&data->info->mutex);
 			break ;
 		}
 		else
 		{
-			printf("alive\n");
+			//printf("alive\n");
 			pthread_mutex_unlock(&data->info->mutex);
 		}
 	}
