@@ -41,4 +41,6 @@ bool				try_to_sleep(t_philosopher_data *data);
 
 bool				try_to_think(t_philosopher_data *data);
 
+bool				special_die_proc(t_philosopher_data *data);
+
 #endif

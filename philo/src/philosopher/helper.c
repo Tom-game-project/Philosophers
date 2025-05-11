@@ -14,6 +14,7 @@
 #include "print.h"
 #include "reaper.h"
 #include "philosopher.h"
+#include "time.h"
 #include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -21,15 +22,15 @@
 #include <unistd.h>
 
 bool	try_to_eat_right(t_philosopher_data *data)
-
 {
 	pthread_mutex_lock(&data->l_fork->mutex);
 	if (get_some_one_die(data->reaper, data))
-	{
-		pthread_mutex_unlock(&data->l_fork->mutex);
-		return (true);
-	}
+		return (pthread_mutex_unlock(&data->l_fork->mutex), true);
 	philo_print(data, data->last_act_timestamp, "has taken a fork\n");
+	if (data->info.number_of_philosophers == 1)
+		return (special_die_proc(data));
+	if (get_some_one_die(data->reaper, data))
+		return (pthread_mutex_unlock(&data->l_fork->mutex), true);
 	pthread_mutex_lock(&data->r_fork->mutex);
 	if (get_some_one_die(data->reaper, data))
 	{
@@ -56,6 +57,7 @@ bool	try_to_eat_left(t_philosopher_data *data)
 		pthread_mutex_unlock(&data->r_fork->mutex);
 		return (true);
 	}
+	philo_print(data, data->last_act_timestamp, "has taken a fork\n");
 	pthread_mutex_lock(&data->l_fork->mutex);
 	if (get_some_one_die(data->reaper, data))
 	{
@@ -63,6 +65,7 @@ bool	try_to_eat_left(t_philosopher_data *data)
 		pthread_mutex_unlock(&data->r_fork->mutex);
 		return (true);
 	}
+	philo_print(data, data->last_act_timestamp, "has taken a fork\n");
 	gettimeofday(&data->last_act_timestamp, NULL);
 	philo_print(data, data->last_act_timestamp, "is eating\n");
 	data->self_status = e_eating;
