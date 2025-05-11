@@ -6,7 +6,7 @@
 /*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:58:46 by tmuranak          #+#    #+#             */
-/*   Updated: 2025/05/11 16:58:46 by tmuranak         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:33:42 by tmuranak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,24 @@
 #include <bits/pthreadtypes.h>
 #include <pthread.h>
 
-static void 
-cpy_info(t_philosopher_data *data, t_info_table info)
+static void	cpy_info(t_philosopher_data *data, t_info_table info)
 {
 	data->info.number_of_philosophers = info.number_of_philosophers;
-	data->info.number_of_times_each_philosopher_must_eat = info.number_of_times_each_philosopher_must_eat;
+	data->info.number_of_times_each_philosopher_must_eat = \
+	info.number_of_times_each_philosopher_must_eat;
 	data->info.time_to_die = info.time_to_die;
-	data->info.time_to_eat= info.time_to_eat;
+	data->info.time_to_eat = info.time_to_eat;
 	data->info.time_to_sleep = info.time_to_sleep;
 }
 
 /// 哲学者に名前を与え
 /// 両側にフォークを用意する
-int set_philos(
-	t_philosopher_data philos[],
-       	t_philo_fork forks[],
-	t_info_table info, // 引数の情報
-	pthread_mutex_t *print_mutex
-)
+int	set_philos(t_philosopher_data philos[],
+				t_philo_fork forks[],
+				t_info_table info,
+				pthread_mutex_t *print_mutex)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info.number_of_philosophers)
@@ -49,4 +47,3 @@ int set_philos(
 	}
 	return (0);
 }
-

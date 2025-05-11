@@ -6,37 +6,29 @@
 /*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:58:39 by tmuranak          #+#    #+#             */
-/*   Updated: 2025/05/11 16:58:39 by tmuranak         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:24:49 by tmuranak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_data.h"
-#include "reaper.h"
-
-#include <pthread.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
-
-// 哲学者の脳みそ
-//
-#include <stdint.h>
 #include "print.h"
+#include "reaper.h"
+#include <pthread.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <sys/time.h>
+#include <unistd.h>
 
-void
-update_last_eat_time(t_philosopher_data *data)
+void	update_last_eat_time(t_philosopher_data *data)
 {
 	pthread_mutex_lock(&data->time_mutex);
 	gettimeofday(&data->last_eat_timestamp, NULL);
 	pthread_mutex_unlock(&data->time_mutex);
 }
 
-/// 自分（哲学者自身）が自分の死を判定するための関数
-/// 誰かが死んだかどうかの判定
-/// 確認すべきこと、だれかが死んでいるかどうかまた、死んだのは自分かどうか
-bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
+bool	get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
 {
-	bool some_one_die;
+	bool	some_one_die;
 
 	pthread_mutex_lock(&reaper->mutex);
 	some_one_die = reaper->dead_philo != NULL;
@@ -48,24 +40,19 @@ bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
 	return (some_one_die);
 }
 
-/// 満腹判定
-bool is_full(t_philosopher_data data)
+bool	is_full(t_philosopher_data data)
 {
-	bool finish_eating;
-	//return (data.info.number_of_times_each_philosopher_must_eat != -1
-	//		&& data.info.number_of_times_each_philosopher_must_eat <= data.eat_counter);
+	bool	finish_eating;
+
 	if (data.info.number_of_times_each_philosopher_must_eat == -1)
 		return (false);
 	pthread_mutex_lock(&data.reaper->philo_counter_mutex);
-	//printf("number_of_philosophers:philo_counter %d %d\n", data.info.number_of_philosophers , data.reaper->philo_counter);
 	finish_eating = data.info.number_of_philosophers <= data.reaper->philo_counter;
 	pthread_mutex_unlock(&data.reaper->philo_counter_mutex);
-	return (
-		finish_eating
-	);
+	return (finish_eating);
 }
 
-bool try_to_eat_right(t_philosopher_data *data)
+bool	try_to_eat_right(t_philosopher_data *data)
 
 {
 	pthread_mutex_lock(&data->l_fork->mutex);
@@ -85,16 +72,14 @@ bool try_to_eat_right(t_philosopher_data *data)
 	philo_print(data, data->last_act_timestamp, "has taken a fork\n");
 	gettimeofday(&data->last_act_timestamp, NULL);
 	philo_print(data, data->last_act_timestamp, "is eating\n");
-	data->self_status = e_eating; // 隣の人から箸を得られたら
-	// eating
+	data->self_status = e_eating;
 	usleep_wrap(data->info.time_to_eat, data->last_act_timestamp);
-	pthread_mutex_unlock(&data->r_fork->mutex); // 箸を置く
+	pthread_mutex_unlock(&data->r_fork->mutex);
 	pthread_mutex_unlock(&data->l_fork->mutex);
 	return (false);
-
 }
 
-bool try_to_eat_left(t_philosopher_data *data)
+bool	try_to_eat_left(t_philosopher_data *data)
 {
 	usleep(100);
 	pthread_mutex_lock(&data->r_fork->mutex);
@@ -120,7 +105,7 @@ bool try_to_eat_left(t_philosopher_data *data)
 }
 
 /// 考えながら食事の時間を待つ
-bool try_to_eat(t_philosopher_data *data)
+bool	try_to_eat(t_philosopher_data *data)
 {
 	if (data->philo_id % 2 == 0)
 		return (try_to_eat_right(data));
@@ -128,7 +113,7 @@ bool try_to_eat(t_philosopher_data *data)
 		return (try_to_eat_left(data));
 }
 
-bool try_to_sleep(t_philosopher_data *data)
+bool	try_to_sleep(t_philosopher_data *data)
 {
 	data->eat_counter += 1;
 	if (data->eat_counter == data->info.number_of_times_each_philosopher_must_eat)
@@ -147,7 +132,7 @@ bool try_to_sleep(t_philosopher_data *data)
 	return (false);
 }
 
-bool try_to_think(t_philosopher_data *data)
+bool	try_to_think(t_philosopher_data *data)
 {
 	if (get_some_one_die(data->reaper, data))
 		return (true);
@@ -157,15 +142,15 @@ bool try_to_think(t_philosopher_data *data)
 	return (false);
 }
 
-void *philo_thread_func(void *param)
+void	*philo_thread_func(void *param)
 {
-	t_philosopher_data *data;
-	data = (t_philosopher_data *) param;
+	t_philosopher_data	*data;
 
+	data = (t_philosopher_data *)param;
 	update_last_eat_time(data);
 	data->self_status = e_thinking;
 	gettimeofday(&data->last_act_timestamp, NULL);
-	while (true) 
+	while (true)
 		if (data->self_status == e_thinking)
 		{
 			if (try_to_eat(data))
@@ -176,7 +161,7 @@ void *philo_thread_func(void *param)
 			if (try_to_sleep(data))
 				break ;
 		}
-		else 
+		else
 		{
 			if (try_to_think(data))
 				break ;

@@ -1,42 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reaper.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/11 17:17:55 by tmuranak          #+#    #+#             */
+/*   Updated: 2025/05/11 17:21:30 by tmuranak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef REAPER_H
-#define REAPER_H
+# define REAPER_H
 
-#include "philo_data.h"
-#include <bits/pthreadtypes.h>
-#include <stdbool.h>
-#include <pthread.h>
-typedef struct s_reaper t_reaper;
+# include "philo_data.h"
+# include <bits/pthreadtypes.h>
+# include <pthread.h>
+# include <stdbool.h>
+typedef struct s_reaper				t_reaper;
 
-typedef struct s_philosopher_data t_philosopher_data;
-typedef struct s_info_table t_info_table;
+typedef struct s_philosopher_data	t_philosopher_data;
+typedef struct s_info_table			t_info_table;
 
-/// プログラムが一回走るごとに、reaperスレッドが一つできます
-struct s_reaper
+struct								s_reaper
 {
-	t_philosopher_data *philosophers;
-	// それぞれの哲学者にアクセスするための配列
-	t_philosopher_data *dead_philo; 
-	// 死んだ哲学者の一人分のポインタ
-	struct timeval dead_time_stamp;
-	// 死んだ時間
-	int philo_counter;
-	// 最低食事回数を済ませた哲学者は自己申告でその値を更新
-	pthread_mutex_t philo_counter_mutex;
-	pthread_mutex_t mutex;
-	t_info_table info;
-       	// 死んだ哲学者が誰かを、それぞれの哲学者が状態を変化させる前に確認するので、その時に哲学者からmutexを保護する
+	t_philosopher_data				*philosophers;
+	t_philosopher_data				*dead_philo;
+	struct timeval					dead_time_stamp;
+	int								philo_counter;
+	pthread_mutex_t					philo_counter_mutex;
+	pthread_mutex_t					mutex;
+	t_info_table					info;
 };
 
-void *reaper_thread_func(void *param);
+void								*reaper_thread_func(void *param);
 
-int set_reaper(t_reaper *reaper, t_info_table info, t_philosopher_data *philosophers);
+int									set_reaper(t_reaper *reaper,
+										t_info_table info,
+										t_philosopher_data *philosophers);
 
-t_reaper *init_reaper(t_info_table info, t_philosopher_data *philosophers);
+t_reaper							*init_reaper(t_info_table info,
+										t_philosopher_data *philosophers);
 
-int set_reaper_to_philo(
-	t_philosopher_data *philos,
-	t_reaper *reaper
-);
+int									set_reaper_to_philo(t_philosopher_data *philos,
+										t_reaper *reaper);
 
 #endif
-

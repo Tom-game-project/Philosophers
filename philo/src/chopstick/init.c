@@ -6,7 +6,7 @@
 /*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:58:28 by tmuranak          #+#    #+#             */
-/*   Updated: 2025/05/11 16:58:29 by tmuranak         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:23:10 by tmuranak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include "chopstick.h"
 
-/// freeが必要な配列を返却する
-/// 長さはinfo->number_of_philosophers
 t_philo_fork *init_forks(int number_of_philosophers)
 {
 	t_philo_fork *forks;
