@@ -33,7 +33,7 @@ int	str_to_num(int num, char *str)
 static bool	arg_check(int number_of_philosophers, int time_to_die,
 		int time_to_eat, int time_to_sleep)
 {
-	return (number_of_philosophers >= 0 && time_to_eat >= 0 && time_to_die >= 0
+	return (number_of_philosophers > 0 && time_to_eat >= 0 && time_to_die >= 0
 		&& time_to_sleep >= 0);
 }
 
