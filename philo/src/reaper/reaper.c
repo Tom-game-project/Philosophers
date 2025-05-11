@@ -15,7 +15,6 @@ bool is_dead(struct timeval last_eat_timestamp, long time_to_die)
 	long seconds = now.tv_sec - last_eat_timestamp.tv_sec;
 	long microseconds = now.tv_usec - last_eat_timestamp.tv_usec;
 	long d = seconds * 1000 + microseconds * 1e-3;
-	//printf("useconds_t %lu %lu\n",time_to_die, d);
 	return (time_to_die <= d);
 }
 

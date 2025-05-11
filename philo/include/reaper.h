@@ -20,7 +20,7 @@ struct s_reaper
 	// 死んだ時間
 	pthread_mutex_t mutex;
 	t_info_table info;
-       	// 死んだ哲学者が誰かを、それぞれの哲学者が状態を変化させる前に確認するので、その時にmutexを保護する
+       	// 死んだ哲学者が誰かを、それぞれの哲学者が状態を変化させる前に確認するので、その時に哲学者からmutexを保護する
 };
 
 void *reaper_thread_func(void *param);

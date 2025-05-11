@@ -1,5 +1,6 @@
 #include "philo_data.h"
 #include <bits/pthreadtypes.h>
+#include <pthread.h>
 
 static void 
 cpy_info(t_philosopher_data *data, t_info_table info)
@@ -29,6 +30,7 @@ int set_philos(
 		philos[i].print_mutex = print_mutex;
 		philos[i].philo_id = i;
 		philos[i].eat_counter = 0;
+		pthread_mutex_init(&philos[i].time_mutex, NULL);
 		philos[i].l_fork = &forks[i];
 		philos[i].r_fork = &forks[(i + 1) % info.number_of_philosophers];
 		i += 1;

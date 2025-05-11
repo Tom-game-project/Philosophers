@@ -1,6 +1,5 @@
 
 #include "reaper.h"
-#include <stdio.h>
 
 int set_reaper_to_philo(
 	t_philosopher_data *philos,

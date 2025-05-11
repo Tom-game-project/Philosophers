@@ -10,7 +10,6 @@ t_reaper *init_reaper(t_info_table info, t_philosopher_data *philosophers)
 
 	reaper = (t_reaper*) malloc(sizeof(t_reaper));
 
-	pthread_mutex_init(&reaper->mutex, NULL);
 	set_reaper(reaper, info, philosophers);
 	return (reaper);
 }
