@@ -9,43 +9,45 @@
 #include "philosopher.h"
 #include "chopstick.h"
 #include "reaper.h"
+#include "setargs.h"
 
-int main(int argc, char *args[])
+struct s_characters
 {
-	(void) argc;
-	(void) args;
-	t_info_table arg_info;
-	pthread_t *tid_table;
 	t_philosopher_data *philosophers;
 	t_reaper *reaper;
 	t_philo_fork *forks;
+};
+
+
+int main(int argc, char *argv[])
+{
+	t_info_table arg_info;
+	pthread_t *tid_table;
+	struct s_characters characters;
 	pthread_mutex_t print_mutex;
 
 	/// 後で、引数を確かめる
-	arg_info.number_of_philosophers = 4;
-	arg_info.time_to_die = 410;
-	arg_info.time_to_eat = 200;
-	arg_info.time_to_sleep = 200;
-	//t.time_to_die = 310; // 4 310 200 100
-	//t.time_to_eat = 200;
-	//t.time_to_sleep = 100;
-	arg_info.number_of_times_each_philosopher_must_eat = 6;
+	if (!set_args(argc, argv, &arg_info))
+	{
+		printf("arg error\n");
+		return (1);
+	}
 	tid_table = (pthread_t*) malloc(sizeof(pthread_t) * (arg_info.number_of_philosophers + 1)); // 哲学者の人数分のスレッドと死神用のスレッド
 	memset(tid_table, 0, sizeof(pthread_t) * (arg_info.number_of_philosophers + 1));
-	forks = init_forks(arg_info.number_of_philosophers);
+	characters.forks = init_forks(arg_info.number_of_philosophers);
 	pthread_mutex_init(&print_mutex ,NULL);
-	philosophers = init_philos(forks, arg_info, &print_mutex);
+	characters.philosophers = init_philos(characters.forks, arg_info, &print_mutex);
 
-	reaper = init_reaper(arg_info, philosophers);
-	set_reaper_to_philo(philosophers, reaper);
+	characters.reaper = init_reaper(arg_info, characters.philosophers);
+	set_reaper_to_philo(characters.philosophers, characters.reaper);
 	int i;
 	i = 0;
 	while (i < arg_info.number_of_philosophers)
 	{
-		pthread_create(&tid_table[i], NULL, philo_thread_func, &philosophers[i]);
+		pthread_create(&tid_table[i], NULL, philo_thread_func, &characters.philosophers[i]);
 		i += 1;
 	}
-	pthread_create(&tid_table[i], NULL, reaper_thread_func, reaper);
+	pthread_create(&tid_table[i], NULL, reaper_thread_func, characters.reaper);
 	/// thread の終了を待つ
 	i = 0;
 	while (i < arg_info.number_of_philosophers + 1)
@@ -57,8 +59,8 @@ int main(int argc, char *args[])
 		i += 1;
 	}
 	free(tid_table);
-	free(forks);
-	free(philosophers);
-	free(reaper);
+	free(characters.forks);
+	free(characters.philosophers);
+	free(characters.reaper);
 }
 

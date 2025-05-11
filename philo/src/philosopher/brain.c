@@ -84,7 +84,7 @@ bool try_to_eat_right(t_philosopher_data *data)
 
 bool try_to_eat_left(t_philosopher_data *data)
 {
-	usleep(1);
+	usleep(100);
 	pthread_mutex_lock(&data->r_fork->mutex);
 	if (get_some_one_die(data->reaper, data))
 	{
@@ -119,7 +119,6 @@ bool try_to_eat(t_philosopher_data *data)
 bool try_to_sleep(t_philosopher_data *data)
 {
 	data->eat_counter += 1;
-	//printf("[%d] [%d] \n",data->eat_counter, data->info.number_of_times_each_philosopher_must_eat);
 	if (data->eat_counter == data->info.number_of_times_each_philosopher_must_eat)
 	{
 		pthread_mutex_lock(&data->reaper->philo_counter_mutex);

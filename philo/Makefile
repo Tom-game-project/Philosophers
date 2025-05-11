@@ -36,6 +36,9 @@ REAPER_SRC = \
 TIME_SRC = \
 		src/time/time_util.c
 
+SETARGS_SRC = \
+		src/setargs/set_args.c
+
 ENTRY_SRC = src/philo.c
 
 
@@ -44,7 +47,8 @@ SRCS	= $(CHOPSTICK_SRC)\
 		$(PRINT_SRC)\
 		$(REAPER_SRC)\
 		$(TIME_SRC)\
-		$(ENTRY_SRC)
+		$(ENTRY_SRC)\
+		$(SETARGS_SRC)
 
 
 OBJS	=	$(SRCS:.c=.o)
