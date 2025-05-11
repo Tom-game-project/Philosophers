@@ -38,13 +38,12 @@ int main(int argc, char *argv[])
 	struct s_characters characters;
 	pthread_mutex_t print_mutex;
 
-	/// 後で、引数を確かめる
 	if (!set_args(argc, argv, &arg_info))
 	{
 		printf("arg error\n");
 		return (1);
 	}
-	tid_table = (pthread_t*) malloc(sizeof(pthread_t) * (arg_info.number_of_philosophers + 1)); // 哲学者の人数分のスレッドと死神用のスレッド
+	tid_table = (pthread_t*) malloc(sizeof(pthread_t) * (arg_info.number_of_philosophers + 1));
 	memset(tid_table, 0, sizeof(pthread_t) * (arg_info.number_of_philosophers + 1));
 	characters.forks = init_forks(arg_info.number_of_philosophers);
 	pthread_mutex_init(&print_mutex ,NULL);
@@ -60,7 +59,6 @@ int main(int argc, char *argv[])
 		i += 1;
 	}
 	pthread_create(&tid_table[i], NULL, reaper_thread_func, characters.reaper);
-	/// thread の終了を待つ
 	i = 0;
 	while (i < arg_info.number_of_philosophers + 1)
 	{
