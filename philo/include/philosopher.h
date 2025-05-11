@@ -16,16 +16,29 @@
 # include "philo_data.h"
 # include "reaper.h"
 
-int					set_philos(t_philosopher_data philos[],
-						t_philo_fork forks[], t_info_table info,
-						pthread_mutex_t *print_mutex);
+t_philosopher_data	*init_philos(t_philo_fork forks[], t_info_table info, \
+pthread_mutex_t *print_mutex);
 
-int					set_reaper_to_philo(t_philosopher_data philos[],
-						t_reaper *reaper);
+int					set_philos(t_philosopher_data philos[], \
+t_philo_fork forks[], t_info_table info, \
+pthread_mutex_t *print_mutex);
 
-t_philosopher_data	*init_philos(t_philo_fork forks[], t_info_table info,
-						pthread_mutex_t *print_mutex);
+int					set_reaper_to_philo(t_philosopher_data philos[], \
+t_reaper *reaper);
 
 void				*philo_thread_func(void *param);
+
+void				update_last_eat_time(t_philosopher_data *data);
+
+bool				get_some_one_die(\
+t_reaper *reaper, t_philosopher_data *self);
+
+bool				is_full(t_philosopher_data data);
+
+bool				try_to_eat(t_philosopher_data *data);
+
+bool				try_to_sleep(t_philosopher_data *data);
+
+bool				try_to_think(t_philosopher_data *data);
 
 #endif

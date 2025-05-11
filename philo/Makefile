@@ -20,6 +20,8 @@ CHOPSTICK_SRC=\
 
 PHILOSOPHER_SRC = \
 		src/philosopher/brain.c\
+		src/philosopher/die.c\
+		src/philosopher/helper.c\
 		src/philosopher/init.c\
 		src/philosopher/set.c\
 

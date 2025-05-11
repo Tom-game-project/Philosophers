@@ -65,9 +65,9 @@ struct								s_philo_fork
 
 struct s_characters
 {
-	t_philosopher_data *philosophers;
-	t_reaper *reaper;
-	t_philo_fork *forks;
+	t_philosopher_data			*philosophers;
+	t_reaper					*reaper;
+	t_philo_fork				*forks;
 };
 
 #endif

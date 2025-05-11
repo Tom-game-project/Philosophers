@@ -17,6 +17,7 @@
 # include <bits/pthreadtypes.h>
 # include <pthread.h>
 # include <stdbool.h>
+
 typedef struct s_reaper				t_reaper;
 
 typedef struct s_philosopher_data	t_philosopher_data;
@@ -33,16 +34,15 @@ struct								s_reaper
 	t_info_table					info;
 };
 
-void								*reaper_thread_func(void *param);
+void		*reaper_thread_func(void *param);
 
-int									set_reaper(t_reaper *reaper,
-										t_info_table info,
-										t_philosopher_data *philosophers);
+int			set_reaper(t_reaper *reaper, \
+t_info_table info, t_philosopher_data *philosophers);
 
-t_reaper							*init_reaper(t_info_table info,
-										t_philosopher_data *philosophers);
+t_reaper	*init_reaper(t_info_table info, \
+t_philosopher_data *philosophers);
 
-int									set_reaper_to_philo(t_philosopher_data *philos,
-										t_reaper *reaper);
+int			set_reaper_to_philo(t_philosopher_data *philos, \
+		t_reaper *reaper);
 
 #endif

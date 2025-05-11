@@ -17,4 +17,3 @@ int	debug_dprintf(\
 	int fd, const char *format, ...) __attribute__((format(printf, 2, 3)));
 
 #endif
-

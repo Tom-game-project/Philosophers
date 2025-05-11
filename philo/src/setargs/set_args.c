@@ -40,30 +40,28 @@ static bool	arg_check(int number_of_philosophers, int time_to_die,
 /// return true without error
 bool	set_args(int argc, char *argv[], t_info_table *arg_info)
 {
-	int	number_of_philosophers;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_times_each_philosopher_must_eat;
+	int	a;
+	int	b;
+	int	c;
+	int	d;
+	int	e;
 
 	if (!(argc == 5 || argc == 6))
 		return (false);
-	number_of_philosophers = str_to_num(0, argv[1]);
-	time_to_die = str_to_num(0, argv[2]);
-	time_to_eat = str_to_num(0, argv[3]);
-	time_to_sleep = str_to_num(0, argv[4]);
-	if (!arg_check(number_of_philosophers, time_to_die, time_to_eat,
-			time_to_sleep))
+	a = str_to_num(0, argv[1]);
+	b = str_to_num(0, argv[2]);
+	c = str_to_num(0, argv[3]);
+	d = str_to_num(0, argv[4]);
+	if (!arg_check(a, b, c, d))
 		return (false);
 	if (argc == 5)
-		number_of_times_each_philosopher_must_eat = -1;
+		e = -1;
 	else
-		number_of_times_each_philosopher_must_eat = str_to_num(0, argv[5]);
-	arg_info->number_of_philosophers = number_of_philosophers;
-	arg_info->time_to_die = time_to_die;
-	arg_info->time_to_eat = time_to_eat;
-	arg_info->time_to_sleep = time_to_eat;
-	arg_info->number_of_times_each_philosopher_must_eat = number_of_times_each_philosopher_must_eat;
-	return (argc == 5 || (argc == 6
-			&& number_of_times_each_philosopher_must_eat >= 0));
+		e = str_to_num(0, argv[5]);
+	arg_info->number_of_philosophers = a;
+	arg_info->time_to_die = b;
+	arg_info->time_to_eat = c;
+	arg_info->time_to_sleep = c;
+	arg_info->number_of_times_each_philosopher_must_eat = e;
+	return (argc == 5 || (argc == 6 && e >= 0));
 }
