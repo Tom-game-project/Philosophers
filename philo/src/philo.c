@@ -55,7 +55,7 @@ int	main(int argc, char *argv[])
 
 	if (!set_args(argc, argv, &arg_info))
 	{
-		printf("arg error\n");
+		printf("Error!\n");
 		return (1);
 	}
 	tid_table = (pthread_t *)malloc(sizeof(pthread_t)
