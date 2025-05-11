@@ -10,16 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_data.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include "chopstick.h"
+#include "philo_data.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-t_philo_fork *init_forks(int number_of_philosophers)
+t_philo_fork	*init_forks(int number_of_philosophers)
 {
-	t_philo_fork *forks;
+	t_philo_fork	*forks;
 
-	forks = (t_philo_fork *) malloc(sizeof(t_philo_fork) * number_of_philosophers);
+	forks = (t_philo_fork *)malloc(sizeof(t_philo_fork)
+			* number_of_philosophers);
 	if (forks == NULL)
 		return (NULL);
 	set_forks(forks, number_of_philosophers);

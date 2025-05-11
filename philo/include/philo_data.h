@@ -6,7 +6,7 @@
 /*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:17:45 by tmuranak          #+#    #+#             */
-/*   Updated: 2025/05/11 17:20:26 by tmuranak         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:56:13 by tmuranak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ struct								s_philo_fork
 {
 	pthread_mutex_t					mutex;
 	int								fork_id;
+};
+
+struct s_characters
+{
+	t_philosopher_data *philosophers;
+	t_reaper *reaper;
+	t_philo_fork *forks;
 };
 
 #endif

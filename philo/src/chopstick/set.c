@@ -13,9 +13,9 @@
 #include "philo_data.h"
 #include <stdio.h>
 
-int set_forks(t_philo_fork f[], int number_of_philosophers)
+int	set_forks(t_philo_fork f[], int number_of_philosophers)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < number_of_philosophers)
@@ -26,4 +26,3 @@ int set_forks(t_philo_fork f[], int number_of_philosophers)
 	}
 	return (0);
 }
-
