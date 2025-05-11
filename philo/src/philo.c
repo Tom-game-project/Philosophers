@@ -22,13 +22,36 @@
 #include <string.h>
 #include <unistd.h>
 
+void	thread_loop(
+	t_info_table arg_info,
+	pthread_t *tid_table,
+	struct s_characters characters
+)
+{
+	int	i;
+
+	i = 0;
+	while (i < arg_info.number_of_philosophers)
+	{
+		pthread_create(&tid_table[i], NULL, philo_thread_func,
+			&characters.philosophers[i]);
+		i += 1;
+	}
+	pthread_create(&tid_table[i], NULL, reaper_thread_func, characters.reaper);
+	i = 0;
+	while (i < arg_info.number_of_philosophers + 1)
+	{
+		pthread_join(tid_table[i], NULL);
+		i += 1;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	t_info_table		arg_info;
 	pthread_t			*tid_table;
 	struct s_characters	characters;
 	pthread_mutex_t		print_mutex;
-	int					i;
 
 	if (!set_args(argc, argv, &arg_info))
 	{
@@ -45,20 +68,7 @@ int	main(int argc, char *argv[])
 			&print_mutex);
 	characters.reaper = init_reaper(arg_info, characters.philosophers);
 	set_reaper_to_philo(characters.philosophers, characters.reaper);
-	i = 0;
-	while (i < arg_info.number_of_philosophers)
-	{
-		pthread_create(&tid_table[i], NULL, philo_thread_func,
-			&characters.philosophers[i]);
-		i += 1;
-	}
-	pthread_create(&tid_table[i], NULL, reaper_thread_func, characters.reaper);
-	i = 0;
-	while (i < arg_info.number_of_philosophers + 1)
-	{
-		pthread_join(tid_table[i], NULL);
-		i += 1;
-	}
+	thread_loop(arg_info, tid_table, characters);
 	free(tid_table);
 	free(characters.forks);
 	free(characters.philosophers);
