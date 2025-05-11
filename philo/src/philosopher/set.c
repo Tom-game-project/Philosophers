@@ -24,8 +24,6 @@ static void	cpy_info(t_philosopher_data *data, t_info_table info)
 	data->info.time_to_sleep = info.time_to_sleep;
 }
 
-/// 哲学者に名前を与え
-/// 両側にフォークを用意する
 int	set_philos(t_philosopher_data philos[], t_philo_fork forks[],
 		t_info_table info, pthread_mutex_t *print_mutex)
 {

@@ -75,7 +75,6 @@ bool	try_to_eat_left(t_philosopher_data *data)
 	return (false);
 }
 
-/// 考えながら食事の時間を待つ
 bool	try_to_eat(t_philosopher_data *data)
 {
 	if (data->philo_id % 2 == 0)
