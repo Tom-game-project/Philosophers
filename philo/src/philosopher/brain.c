@@ -24,9 +24,7 @@ void	*philo_thread_func(void *param)
 	t_philosopher_data	*data;
 
 	data = (t_philosopher_data *)param;
-	update_last_eat_time(data);
 	data->self_status = e_thinking;
-	gettimeofday(&data->last_act_timestamp, NULL);
 	while (true)
 	{
 		if (data->self_status == e_thinking)
