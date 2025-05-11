@@ -39,8 +39,18 @@ bool get_some_one_die(t_reaper *reaper, t_philosopher_data *self)
 /// 満腹判定
 bool is_full(t_philosopher_data data)
 {
-	return (data.info.number_of_times_each_philosopher_must_eat != -1
-			&& data.info.number_of_times_each_philosopher_must_eat <= data.eat_counter);
+	bool finish_eating;
+	//return (data.info.number_of_times_each_philosopher_must_eat != -1
+	//		&& data.info.number_of_times_each_philosopher_must_eat <= data.eat_counter);
+	if (data.info.number_of_times_each_philosopher_must_eat == -1)
+		return (false);
+	pthread_mutex_lock(&data.reaper->philo_counter_mutex);
+	//printf("number_of_philosophers:philo_counter %d %d\n", data.info.number_of_philosophers , data.reaper->philo_counter);
+	finish_eating = data.info.number_of_philosophers <= data.reaper->philo_counter;
+	pthread_mutex_unlock(&data.reaper->philo_counter_mutex);
+	return (
+		finish_eating
+	);
 }
 
 bool try_to_eat_right(t_philosopher_data *data)
@@ -109,6 +119,13 @@ bool try_to_eat(t_philosopher_data *data)
 bool try_to_sleep(t_philosopher_data *data)
 {
 	data->eat_counter += 1;
+	//printf("[%d] [%d] \n",data->eat_counter, data->info.number_of_times_each_philosopher_must_eat);
+	if (data->eat_counter == data->info.number_of_times_each_philosopher_must_eat)
+	{
+		pthread_mutex_lock(&data->reaper->philo_counter_mutex);
+		data->reaper->philo_counter += 1;
+		pthread_mutex_unlock(&data->reaper->philo_counter_mutex);
+	}
 	if (get_some_one_die(data->reaper, data) || is_full(*data))
 		return (true);
 	update_last_eat_time(data);

@@ -21,7 +21,6 @@ int main(int argc, char *args[])
 	t_philo_fork *forks;
 	pthread_mutex_t print_mutex;
 
-
 	/// 後で、引数を確かめる
 	arg_info.number_of_philosophers = 4;
 	arg_info.time_to_die = 410;
@@ -30,7 +29,7 @@ int main(int argc, char *args[])
 	//t.time_to_die = 310; // 4 310 200 100
 	//t.time_to_eat = 200;
 	//t.time_to_sleep = 100;
-	arg_info.number_of_times_each_philosopher_must_eat = -1;
+	arg_info.number_of_times_each_philosopher_must_eat = 6;
 	tid_table = (pthread_t*) malloc(sizeof(pthread_t) * (arg_info.number_of_philosophers + 1)); // 哲学者の人数分のスレッドと死神用のスレッド
 	memset(tid_table, 0, sizeof(pthread_t) * (arg_info.number_of_philosophers + 1));
 	forks = init_forks(arg_info.number_of_philosophers);

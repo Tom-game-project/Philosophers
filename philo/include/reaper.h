@@ -2,6 +2,7 @@
 #define REAPER_H
 
 #include "philo_data.h"
+#include <bits/pthreadtypes.h>
 #include <stdbool.h>
 #include <pthread.h>
 typedef struct s_reaper t_reaper;
@@ -18,6 +19,9 @@ struct s_reaper
 	// 死んだ哲学者の一人分のポインタ
 	struct timeval dead_time_stamp;
 	// 死んだ時間
+	int philo_counter;
+	// 最低食事回数を済ませた哲学者は自己申告でその値を更新
+	pthread_mutex_t philo_counter_mutex;
 	pthread_mutex_t mutex;
 	t_info_table info;
        	// 死んだ哲学者が誰かを、それぞれの哲学者が状態を変化させる前に確認するので、その時に哲学者からmutexを保護する

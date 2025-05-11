@@ -18,6 +18,8 @@ int set_reaper(t_reaper *reaper, t_info_table info, t_philosopher_data *philosop
 	reaper->dead_philo = NULL;
 	reaper->philosophers = philosophers;
 	pthread_mutex_init(&reaper->mutex, NULL);
+	reaper->philo_counter = 0;
+	pthread_mutex_init(&reaper->philo_counter_mutex, NULL);
 	cpy_info(reaper, info);
 	return (0);
 }
