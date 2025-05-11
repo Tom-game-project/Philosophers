@@ -6,7 +6,7 @@
 /*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:59:05 by tmuranak          #+#    #+#             */
-/*   Updated: 2025/05/11 18:00:07 by tmuranak         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:05:14 by tmuranak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 static void	cpy_info(t_reaper *data, t_info_table info)
 {
 	data->info.number_of_philosophers = info.number_of_philosophers;
-	data->info.number_of_times_each_philosopher_must_eat = info.number_of_times_each_philosopher_must_eat;
+	data->info.number_of_times_each_philosopher_must_eat = \
+	info.number_of_times_each_philosopher_must_eat;
 	data->info.time_to_die = info.time_to_die;
 	data->info.time_to_eat = info.time_to_eat;
 	data->info.time_to_sleep = info.time_to_sleep;
