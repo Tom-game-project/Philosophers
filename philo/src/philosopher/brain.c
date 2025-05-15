@@ -25,21 +25,21 @@ static void eat_time_offset(
 	t_philosopher_data	*data
 		)
 {
+	useconds_t d;
+	useconds_t wait_step;
+	useconds_t wait_time;
+
 	if (data->info.number_of_philosophers % 2 == 1)
 	{
-		useconds_t d;
-		useconds_t wait_step;
-        
 		d = data->info.number_of_philosophers / 2 + 1;
 		wait_step = data->info.time_to_eat / d;
 		if (data->philo_id % 2 == 0)
-			usleep_wrap(
-					wait_step * (data->philo_id / 2),
-					data->last_act_timestamp);
+			wait_time = wait_step * (data->philo_id / 2);
 		else 
-			usleep_wrap(
-					wait_step * (data->philo_id / 2) + data->info.time_to_eat,
-					data->last_act_timestamp);
+			wait_time = wait_step * (data->philo_id / 2) + data->info.time_to_eat;
+		usleep_wrap(
+				wait_time,
+				data->last_act_timestamp);
 	}
 }
 
@@ -50,7 +50,6 @@ void	*philo_thread_func(void *param)
 	data = (t_philosopher_data *)param;
 	data->self_status = e_thinking;
 	eat_time_offset(data);
-	// ここで死亡チェックを挟む
 	if (get_some_one_die(data->reaper, data))
 		return (NULL);
 	while (true)
