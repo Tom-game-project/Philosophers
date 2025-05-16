@@ -6,7 +6,7 @@
 /*   By: tmuranak <tmuranak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:58:46 by tmuranak          #+#    #+#             */
-/*   Updated: 2025/05/11 18:04:57 by tmuranak         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:10:34 by tmuranak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,17 @@ static void	cpy_info(t_philosopher_data *data, t_info_table info)
 	data->info.time_to_sleep = info.time_to_sleep;
 }
 
-
-static void set_time(struct timeval *target, struct timeval date)
+static void	set_time(struct timeval *target, struct timeval date)
 {
 	target->tv_sec = date.tv_sec;
 	target->tv_usec = date.tv_usec;
 }
 
-
 int	set_philos(t_philosopher_data philos[], t_philo_fork forks[],
 		t_info_table info, pthread_mutex_t *print_mutex)
 {
-	int	i;
-	struct timeval now;
+	int				i;
+	struct timeval	now;
 
 	i = 0;
 	gettimeofday(&now, NULL);
