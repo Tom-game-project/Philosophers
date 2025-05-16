@@ -24,15 +24,15 @@
 bool	try_to_eat_right(t_philosopher_data *data)
 {
 	pthread_mutex_lock(&data->l_fork->mutex);
-	if (get_some_one_die(data->reaper, data))
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 		return (pthread_mutex_unlock(&data->l_fork->mutex), true);
 	philo_print(data, data->last_act_timestamp, "has taken a fork\n");
 	if (data->info.number_of_philosophers == 1)
 		return (special_die_proc(data));
-	if (get_some_one_die(data->reaper, data))
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 		return (pthread_mutex_unlock(&data->l_fork->mutex), true);
 	pthread_mutex_lock(&data->r_fork->mutex);
-	if (get_some_one_die(data->reaper, data))
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 	{
 		pthread_mutex_unlock(&data->r_fork->mutex);
 		pthread_mutex_unlock(&data->l_fork->mutex);
@@ -52,14 +52,14 @@ bool	try_to_eat_left(t_philosopher_data *data)
 {
 	usleep(100);
 	pthread_mutex_lock(&data->r_fork->mutex);
-	if (get_some_one_die(data->reaper, data))
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 	{
 		pthread_mutex_unlock(&data->r_fork->mutex);
 		return (true);
 	}
 	philo_print(data, data->last_act_timestamp, "has taken a fork\n");
 	pthread_mutex_lock(&data->l_fork->mutex);
-	if (get_some_one_die(data->reaper, data))
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 	{
 		pthread_mutex_unlock(&data->l_fork->mutex);
 		pthread_mutex_unlock(&data->r_fork->mutex);
@@ -106,7 +106,7 @@ bool	try_to_sleep(t_philosopher_data *data)
 
 bool	try_to_think(t_philosopher_data *data)
 {
-	if (get_some_one_die(data->reaper, data))
+	if (get_some_one_die(data->reaper, data) || is_full(*data))
 		return (true);
 	gettimeofday(&data->last_act_timestamp, NULL);
 	philo_print(data, data->last_act_timestamp, "is thinking\n");
