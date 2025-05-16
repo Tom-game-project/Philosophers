@@ -41,14 +41,20 @@ static void	eat_time_offset(
 	}
 }
 
+/// 誰かが死んだらtrueを返却する
+static bool	first_philo_proc(t_philosopher_data *data)
+{
+	data->self_status = e_thinking;
+	eat_time_offset(data);
+	return (get_some_one_die(data->reaper, data));
+}
+
 void	*philo_thread_func(void *param)
 {
 	t_philosopher_data	*data;
 
 	data = (t_philosopher_data *)param;
-	data->self_status = e_thinking;
-	eat_time_offset(data);
-	if (get_some_one_die(data->reaper, data))
+	if (first_philo_proc(data))
 		return (NULL);
 	while (true)
 	{
